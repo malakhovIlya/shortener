@@ -6,17 +6,17 @@ import (
 )
 
 type URLShortener struct {
-	storage map[string]string
+	Storage map[string]string
 }
 
 func (urlShortener URLShortener) Shorten(longURL string) string {
 	var shortURL = uuid.New().String()[:6]
-	urlShortener.storage[shortURL] = longURL
+	urlShortener.Storage[shortURL] = longURL
 	return shortURL
 }
 
 func (urlShortener URLShortener) Resolve(code string) (string, error) {
-	value, ok := urlShortener.storage[code]
+	value, ok := urlShortener.Storage[code]
 	if ok {
 		return value, nil
 	} else {
