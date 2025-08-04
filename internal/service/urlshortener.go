@@ -3,23 +3,27 @@ package service
 import (
 	"errors"
 	"github.com/google/uuid"
+	"github.com/malakhovIlya/shortener/internal/storage"
 )
 
 type URLShortener struct {
-	Storage map[string]string
+	Storage storage.Storage
 }
 
 func (urlShortener URLShortener) Shorten(longURL string) string {
-	var shortURL = uuid.New().String()[:6]
-	urlShortener.Storage[shortURL] = longURL
-	return shortURL
+	var code = uuid.New().String()[:6]
+	err := urlShortener.Storage.Save(code, longURL)
+	if err != nil {
+		return ""
+	}
+	return code
 }
 
 func (urlShortener URLShortener) Resolve(code string) (string, error) {
-	value, ok := urlShortener.Storage[code]
-	if ok {
-		return value, nil
-	} else {
+	value, err := urlShortener.Storage.Get(code)
+	if err != nil {
 		return "", errors.New("URL shortener code not found")
+	} else {
+		return value, nil
 	}
 }

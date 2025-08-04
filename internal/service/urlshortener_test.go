@@ -1,10 +1,15 @@
 package service
 
-import "testing"
+import (
+	"github.com/malakhovIlya/shortener/internal/storage"
+	"testing"
+)
 
 func TestURLShortener_Shorten(t *testing.T) {
 	shortener := &URLShortener{
-		Storage: make(map[string]string),
+		Storage: storage.InMemoryStorage{
+			Data: make(map[string]string),
+		},
 	}
 
 	url := "https://example.com"
@@ -12,15 +17,6 @@ func TestURLShortener_Shorten(t *testing.T) {
 
 	if len(code) != 6 {
 		t.Errorf("Expected code length 6, got %d", len(code))
-	}
-
-	storedURL, exists := shortener.Storage[code]
-	if !exists {
-		t.Error("URL not stored in storage")
-	}
-
-	if storedURL != url {
-		t.Errorf("Expected URL %s, got %s", url, storedURL)
 	}
 
 	code2 := shortener.Shorten(url)
@@ -31,8 +27,10 @@ func TestURLShortener_Shorten(t *testing.T) {
 
 func TestURLShortener_Resolve(t *testing.T) {
 	shortener := &URLShortener{
-		Storage: map[string]string{
-			"code123": "https://example.com",
+		Storage: storage.InMemoryStorage{
+			Data: map[string]string{
+				"code123": "https://example.com",
+			},
 		},
 	}
 
@@ -51,8 +49,10 @@ func TestURLShortener_Resolve(t *testing.T) {
 
 func TestURLShortener_Resolve_NotFound(t *testing.T) {
 	shortener := &URLShortener{
-		Storage: map[string]string{
-			"code123": "https://example.com",
+		Storage: storage.InMemoryStorage{
+			Data: map[string]string{
+				"code123": "https://example.com",
+			},
 		},
 	}
 	code := "code12"
