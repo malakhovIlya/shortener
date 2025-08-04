@@ -1,0 +1,12 @@
+version: '3'
+services:
+  db:
+    image: postgres:14
+    container_name: shortener_db
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: shortener
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass

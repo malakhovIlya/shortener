@@ -1,0 +1,16 @@
+# Binaries for programs
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Test binaries
+*_test
+
+# Go module cache
+.cache/
+vendor/
+
+# Environment variables
+.env
+.env.*

@@ -10,8 +10,7 @@ import (
 
 func main() {
 	var localStorage storage.Storage
-	//connStr := "postgres://user:password@localhost:54312/dbname"
-	connStr := "postgres" //так как нет БД, пока мок что бы уйти на локальное ранение
+	connStr := "postgres://user:pass@localhost:5432/shortener?sslmode=disable"
 	postgresStorage, errPostgresStorage := storage.NewPostgresStorage(connStr)
 	if errPostgresStorage != nil {
 		log.Println("Fallback to in-memory:", errPostgresStorage)
