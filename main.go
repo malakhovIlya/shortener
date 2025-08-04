@@ -3,12 +3,13 @@ package main
 import (
 	"github.com/malakhovIlya/shortener/internal/handler"
 	"github.com/malakhovIlya/shortener/internal/service"
+	"github.com/malakhovIlya/shortener/internal/storage"
 	"net/http"
 )
 
 func main() {
-	// Создание сервиса сокращения URL
-	shortener := &service.URLShortener{Storage: make(map[string]string)}
+	memoryStorage := storage.InMemoryStorage{Data: make(map[string]string)}
+	shortener := &service.URLShortener{Storage: memoryStorage.Data}
 
 	// Создание обработчика
 	h := &handler.Handler{Shortener: shortener}
